@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi manchi?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 3em;
+            margin-top: 40px;
+            margin-bottom: auto;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: stretch;
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: auto;
+        }
+
+        button {
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .yes-btn {
+            background: #8f3e3e;
+            color: white;
+            padding: 20px 40px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+        }
+
+        .yes-btn:hover {
+            background: #ff5252;
+        }
+
+        .no-btn {
+            background: #e0e0e0;
+            color: #666;
+            padding: 20px 40px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+        }
+
+        .no-btn:hover {
+            background: #d0d0d0;
+        }
+
+        .message {
+            display: none;
+            margin-top: 50px;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <h1>Ti manco?</h1>
+    <div class="buttons">
+        <button class="yes-btn" onclick="yesClicked()">Sì</button>
+        <button class="no-btn" id="noBtn" onclick="noClicked()">No</button>
+    </div>
+    <div class="message" id="message"> Anche tu mi manchi! </div>
+
+    <script>
+        let noClickCount = 0;
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.querySelector('.yes-btn');
+        
+        function yesClicked() {
+            document.getElementById('message').style.display = 'block';
+            document.querySelector('.buttons').style.display = 'none';
+            document.querySelector('h1').textContent = 'Anche tu mi manchi!';
+        }
+
+        function noClicked() {
+            noClickCount++;
+            
+            // Aumenta drasticamente il flex del Sì
+            let yesFlex = parseInt(yesBtn.style.flex || '1');
+            let noFlex = parseFloat(noBtn.style.flex || '1');
+            
+            yesBtn.style.flex = yesFlex + 5;
+            noBtn.style.flex = Math.max(0.1, noFlex - 0.2);
+            
+            // Ingrandisce molto sia font che altezza del Sì
+            const currentYesSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+            const currentYesHeight = parseFloat(window.getComputedStyle(yesBtn).minHeight);
+            yesBtn.style.fontSize = (currentYesSize + 12) + 'px';
+            yesBtn.style.minHeight = (currentYesHeight + 30) + 'px';
+            
+            // Rimpicciolisce leggermente il No
+            const currentNoSize = parseFloat(window.getComputedStyle(noBtn).fontSize);
+            const currentNoHeight = parseFloat(window.getComputedStyle(noBtn).minHeight);
+            noBtn.style.fontSize = Math.max(8, currentNoSize - 1.5) + 'px';
+            noBtn.style.minHeight = Math.max(20, currentNoHeight - 3) + 'px';
+            
+            if (noClickCount === 1) {
+                noBtn.textContent = 'Sei sicura?';
+            } else if (noClickCount === 2) {
+                noBtn.textContent = 'Davvero?';
+            } else if (noClickCount >= 3) {
+                noBtn.textContent = 'No';
+            }
+        }
+    </script>
+</body>
+</html>
